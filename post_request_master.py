@@ -18,7 +18,7 @@ def testPost():
 		if not os.path.exists(directory):
     			os.makedirs(directory)
 		
-		os.system("blender -b /home/Blender/scene-Helicopter-27.blend -o /home/Blender/Rendered -f 'start_frame' -a")
+		os.system("blender -b /home/Blender/to_be_rendered.blend -o /home/Blender/Rendered -f 'start_frame' -a")
 		
 
 
