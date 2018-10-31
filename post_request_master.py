@@ -3,7 +3,7 @@ import os
 import boto3
 import botocore
 app = Flask(__name__)
-directroy = '/home/Blender/Rendered'
+directory = '/home/Blender/Rendered'
 
 @app.route('/start', methods=['POST'])
 def testPost():
