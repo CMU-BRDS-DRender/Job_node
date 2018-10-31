@@ -3,7 +3,7 @@ import os
 import boto3
 import botocore
 app = Flask(__name__)
-directory = '/home/Blender/Rendered'
+directory = '/home/ubuntu/Blender/Rendered'
 
 @app.route('/start', methods=['POST'])
 def testPost():
@@ -25,7 +25,7 @@ if __name__ == '__main__':
 	app.run(host = '127.0.0.1', port = 8080, debug = True)
 		
 		
-		os.system("blender -b /home/Blender/to_be_rendered.blend -o /home/Blender/Rendered/rendered_001 -f 1 -a")
+		os.system("blender -b /home/ubuntu/Blender/to_be_rendered.blend -o /home/ubuntu/Blender/Rendered/rendered_001 -f 1 -a")
 		
 
 
