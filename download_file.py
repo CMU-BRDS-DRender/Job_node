@@ -2,7 +2,7 @@ import os
 import boto3
 import botocore
 
-directroy = '/home/Blender'
+directory = '/home/Blender'
 if not os.path.exists(directory):
     os.makedirs(directory)
 
