@@ -1,0 +1,16 @@
+{
+    "ID": "job1",
+    "projectID": "project1",
+    "source": {
+        "bucketName": "bucketName",
+        "file": "input"
+    },
+    "startFrame": 1,
+    "endFrame": 100,
+    "action": "START",
+    "outputURI": {
+        "bucketName": "bucketName",
+        "file": "output"
+    },
+    "messageQ": "messageQ"
+}

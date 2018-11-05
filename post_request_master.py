@@ -1,32 +1,56 @@
-from flask import Flask, jsonify, request
-import os
-import boto3
-import botocore
+from flask import Flask, jsonify, request, response
 app = Flask(__name__)
-directory = '/home/ubuntu/Blender/Rendered'
 
-@app.route('/start', methods=['POST'])
-def testPost():
+jobs_executed = {}
+
+@app.route('/start', methods=['GET', 'POST'])
+def start():
 	if (request.method == 'POST'):
-		ID = request.json['ID']
+		jobId = request.json['ID']
 		project_ID = request.json['projectID']
 		source_url = request.json['source']
 		start_frame = request.json['startFrame']
 		end_frame = request.json['endFrame']
 		action = request.json['action']
 		bucket_url = request.json['outputURI']
-		return jsonify(start_frame)
-		if not os.path.exists(directory):
-    			os.makedirs(directory)
-			
-	if (request.method == 'GET'):
-		return "Status: 200 OK!"
+		current_job = DRenderJob(start_frame, end_frame, input_bucket, input_file_path, output_bucket, output_file_path. project_ID)
+		jobs_executed[jobId] = current_job
+		current_job.start()
+		response = {}
+
+		response['content-type'] = 'application/json'
+		response['status-code'] = 200
+		response['message'] = 'Bhak bsdk'
+
+		return jsonify(response)
+
+@app.route('/status/<jobId>', methods=['GET'])
+def status(jobId):
+	job = None
+	response = {}
+	response['content-type'] = 'application/json'
+
+
+	if jobId in jobs_executed :
+		job = jobs_executed[jobId]
+		response['status-code'] = 200
+		response['body'] = {
+			jobStatus : job.status
+			framesRendered : job.no_of_frames_rendered
+			jobId : jobId
+			message: 'Job ' + jobId + ' is in progress'
+		}
+	else:
+		response['status-code'] = 400
+		response['body'] = {
+			message: 'Job ' + jobId + ' does not exist'
+			jobId : jobId
+		}
+	return jsonify(response)
+
+
+
+
+
 if __name__ == '__main__':
-	app.run(host = '127.0.0.1', port = 8080, debug = True)
-		
-		
-		os.system("blender -b /home/ubuntu/Blender/to_be_rendered.blend -o /home/ubuntu/Blender/Rendered/rendered_001 -f 1 -a")
-		
-
-
-#os.system("blender -b /mnt/c/Users/Mihir/Downloads/Demo_274/scene-Helicopter-27.blend -o /mnt/c/Users/Mihir/Downloads/Demo_274/Rendered -f 1 -a")
+	app.run(host = '127.0.0.1', port = 8080, debug = True )
