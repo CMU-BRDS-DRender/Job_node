@@ -26,6 +26,13 @@ def start():
 
 @app.route('/status/<jobId>', methods=['GET'])
 def status(jobId):
+    if jobId is None:
+        response = {}
+        response['status-code'] = 200
+        response['body'] = {}
+        response['body']['message'] = 'Service running'
+        return jsonify(response)
+        
     job = None
     response = {}
     if jobId in jobs_executed:
@@ -43,15 +50,6 @@ def status(jobId):
     response['body'] = {}
     response['body']['message'] = 'Job ' + jobId + ' does not exist'
     response['body']['jobId'] = jobId
-    return jsonify(response)
-
-@app.route('/status', methods=['GET'])
-def status():
-    response = {}
-    response['status-code'] = 200
-    response['body'] = {}
-    response['body']['message'] = 'Job ' + jobId + ' does not exist'
-    
     return jsonify(response)
 
 if __name__ == '__main__':
