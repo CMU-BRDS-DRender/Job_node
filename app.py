@@ -45,5 +45,14 @@ def status(jobId):
     response['body']['jobId'] = jobId
     return jsonify(response)
 
+@app.route('/status', methods=['GET'])
+def status():
+    response = {}
+    response['status-code'] = 200
+    response['body'] = {}
+    response['body']['message'] = 'Job ' + jobId + ' does not exist'
+    
+    return jsonify(response)
+
 if __name__ == '__main__':
 	app.run(host = '127.0.0.1', port = 8080, debug = True )
