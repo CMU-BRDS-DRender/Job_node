@@ -16,7 +16,8 @@ def start():
     destination_URI = request.json['outputURI']
     output_bucket = destination_URI['bucketName']
     output_file_path = destination_URI['file']
-    new_job = DRenderJob(jobId, start_frame, end_frame, input_bucket, input_file_path, output_bucket, output_file_path, project_ID)
+    message_uri = destination_URI['messageQ']
+    new_job = DRenderJob(jobId, start_frame, end_frame, input_bucket, input_file_path, output_bucket, output_file_path, project_ID, message_uri)
     jobs_executed[jobId] = new_job
     new_job.start()
     response = {}
@@ -30,7 +31,6 @@ def status(jobId):
     response = {}
     if jobId in jobs_executed:
         job = jobs_executed[jobId]
-        print(job.status)
         response['status-code'] = 200
         response['body'] = {}
         response['body']['jobStatus'] = job.status
