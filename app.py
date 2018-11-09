@@ -11,13 +11,16 @@ def start():
     source_URI = request.json['source']
     input_bucket = source_URI['bucketName']
     input_file_path = source_URI['file']
-    start_frame = request.json['startFrame']
-    end_frame = request.json['endFrame']
+    start_frame = int(request.json['startFrame'])
+    end_frame = int(request.json['endFrame'])
     destination_URI = request.json['outputURI']
     output_bucket = destination_URI['bucketName']
     output_file_path = destination_URI['file']
-    message_uri = destination_URI['messageQ']
-    new_job = DRenderJob(jobId, start_frame, end_frame, input_bucket, input_file_path, output_bucket, output_file_path, project_ID, message_uri)
+    messageQ = request.json['messageQ']
+    message_uri = messageQ['host']
+    message_queuename = messageQ['queue']
+
+    new_job = DRenderJob(jobId, start_frame, end_frame, input_bucket, input_file_path, output_bucket, output_file_path, project_ID, message_uri,message_queuename)
     jobs_executed[jobId] = new_job
     new_job.start()
     response = {}
@@ -34,12 +37,12 @@ def status(jobId):
         response['status-code'] = 200
         response['body'] = {}
         response['body']['jobStatus'] = job.status
-        response['body']['framesRendered'] = job.no_of_frames_rendered
+        response['body']['framesRendered'] = job.frames_rendered
         response['body']['jobId'] = jobId
         response['body']['message'] = 'Job ' + jobId + ' is in progress'
         return jsonify(response)
 
-	response['status-code'] = 400
+    response['status-code'] = 400
     response['body'] = {}
     response['body']['message'] = 'Job ' + jobId + ' does not exist'
     response['body']['jobId'] = jobId
