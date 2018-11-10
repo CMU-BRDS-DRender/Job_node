@@ -6,7 +6,7 @@ jobs_executed = {}
 
 @app.route('/start', methods=['POST'])
 def start():
-    jobId = request.json['ID']
+    jobId = request.json['id']
     project_ID = request.json['projectID']
     source_URI = request.json['source']
     input_bucket = source_URI['bucketName']
@@ -55,4 +55,4 @@ def jobNodeStatus():
     return jsonify(response)
 
 if __name__ == '__main__':
-	app.run(host = '0.0.0.0', port = 8080, debug = True )
+	app.run(host = '0.0.0.0', port = 8080)
