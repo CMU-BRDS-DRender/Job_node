@@ -10,7 +10,7 @@ class StatusManager:
         self.routing_key = message_queuename
         self.jobId = jobId
 
-    def send_status(self, no_of_frames):
+    def send_status(self, no_of_frame, frames_rendered, file_path, bucket_name):
             credentials = pika.PlainCredentials(username="drender", password="brds18947")
             connection = pika.BlockingConnection(pika.ConnectionParameters(host=self.message_uri, credentials=credentials))
             channel = connection.channel()
@@ -18,6 +18,10 @@ class StatusManager:
             body = {}
             body['jobId'] = self.jobId
             body['no_of_frames'] = no_of_frames
+            outputURI = {}
+            outputURI['bucketName'] = bucket_name
+            outputURI['file'] = file_path
+            body['outputURI'] = outputURI
             channel.basic_publish(exchange=self.exchange, routing_key=self.routing_key, body=json.dumps(body))
             print("[x] Sent 'Alive' ")
             connection.close()

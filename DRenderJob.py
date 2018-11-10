@@ -11,6 +11,7 @@ class DRenderJob:
 		self.start_frame = start_frame
 		self.end_frame = end_frame
 		self.frames_rendered = []
+		self.last_frame_rendered = 0
 		self.project_ID = project_ID
 		self.status = "RUNNING"
 		self.jobStatusQueue = StatusManager(message_uri, jobid,message_queuename)
@@ -32,14 +33,15 @@ class DRenderJob:
 	def render_frame(self, frame_number):
 		input_file_path = self.s3Driver.local_directory + "/" + os.path.basename(self.s3Driver.input_file_path)
 		output_file_path = self.s3Driver.local_directory + "/frame-#"
-		command = "blender -b " + input_file_path + " -o " + output_file_path + " -F 'JPEG' -f "+ str(frame_number)
+		command = "blender -b " + input_file_path + " -o " +  + " -F 'JPEG' -f "+ str(frame_number)
 		output = subprocess.call(command,shell=True)
 		self.s3Driver.upload_file("frame-"+str(frame_number)+".jpg");
 
 		#sleep(20)
 		# push jobid and frame_number om Rabbit mQ
 		self.frames_rendered.append(frame_number);
+		self.last_frame_rendered = frame_number
 		try:
-			self.jobStatusQueue.send_status(self.frames_rendered)
+			self.jobStatusQueue.send_status(self.frames_rendered, self.last_frame_rendered, self.s3Driver.output_file_path + "frame-"+str(frame_number)+".jpg")
 		except Exception as e:	
-			print(e)
+			print(e)output_file_path
