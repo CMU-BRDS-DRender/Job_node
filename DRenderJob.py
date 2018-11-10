@@ -24,7 +24,7 @@ class DRenderJob:
 
 
 
-	def render(self):	 
+	def render(self):
 		for i in range(self.start_frame, self.end_frame +1) :
 			self.render_frame(i)
 		self.status = "COMPLETED"
@@ -32,7 +32,7 @@ class DRenderJob:
 
 	def render_frame(self, frame_number):
 		input_file_path = self.s3Driver.local_directory + "/" + os.path.basename(self.s3Driver.input_file_path)
-		output_file_path = self.s3Driver.local_directory + "/frame-#"
+		output_file_path = self.s3Driver.local_directory + "/frame-#.jpg"
 		command = "blender -b " + input_file_path + " -o " + output_file_path + " -F JPEG -f "+ str(frame_number)
 		output = subprocess.call(command,shell=True)
 		self.s3Driver.upload_file("frame-"+str(frame_number)+".jpg");
@@ -43,5 +43,5 @@ class DRenderJob:
 		self.last_frame_rendered = frame_number
 		try:
 			self.jobStatusQueue.send_status(self.frames_rendered, self.last_frame_rendered, self.s3Driver.output_file_path + "frame-"+str(frame_number)+".jpg", self.s3Driver.output_bucket)
-		except Exception as e:	
+		except Exception as e:
 			print(e)
