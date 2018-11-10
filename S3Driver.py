@@ -8,7 +8,7 @@ class S3Driver:
 		self.input_file_path = input_file_path
 		self.output_bucket = output_bucket
 		self.output_file_path = output_file_path
-		self.s3_client = boto3.resource('s3', aws_access_key_id = 'x', aws_secret_access_key = 'x')
+		self.s3_client = boto3.resource('s3')
 		self.local_directory = 'drender'
 
 	def download_file(self):
