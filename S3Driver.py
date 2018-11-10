@@ -22,10 +22,6 @@ class S3Driver:
 	def upload_file(self,file_name):
 		file_path = self.local_directory+ "/"+ file_name
 		if not os.path.exists(file_path):
-			print("Directory does not exist\n\n\n\n\n\n\n\n\n\n\n\n\n")
-			print(file_path)
+			print("File path does not exist")
 			return
-		print(file_path)
-		print("output_file_path + file_name\n\n\n\n\n\n\n\n\n\n\n\n")
-		print(self.output_file_path + file_name)
 		self.s3_client.Bucket(self.output_bucket).upload_file(file_path,self.output_file_path+file_name)
