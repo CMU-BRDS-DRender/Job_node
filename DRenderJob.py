@@ -42,6 +42,6 @@ class DRenderJob:
 		self.frames_rendered.append(frame_number);
 		self.last_frame_rendered = frame_number
 		try:
-			self.jobStatusQueue.send_status(self.frames_rendered, self.last_frame_rendered, self.s3Driver.output_file_path + "frame-"+str(frame_number)+".jpg")
+			self.jobStatusQueue.send_status(self.frames_rendered, self.last_frame_rendered, self.s3Driver.output_file_path + "frame-"+str(frame_number)+".jpg", self.s3Driver.bucket_name)
 		except Exception as e:	
-			print(e)output_file_path
+			print(e)
