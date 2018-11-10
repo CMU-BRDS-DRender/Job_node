@@ -36,8 +36,8 @@ class DRenderJob:
 		output_file_path = self.s3Driver.local_directory + "/frame-#"
 		print(output_file_path)
 		command = "blender -b " + input_file_path + " -o " + output_file_path + " -F 'JPEG' -f "+ str(frame_number)
-		#output = subprocess.call(command,shell=True)
-		#self.s3Driver.upload_file("frame-"+str(frame_number)+".jpg");
+		output = subprocess.call(command,shell=True)
+		self.s3Driver.upload_file("frame-"+str(frame_number)+".jpg");
 
 		#sleep(20)
 		# push jobid and frame_number om Rabbit mQ
